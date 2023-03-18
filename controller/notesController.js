@@ -3,7 +3,7 @@ module.exports = {
     mainPage: async (req, res) => {
         console.log(req.user)
         try {
-            const notes = await Note.find({ user: req.user.id })
+            const notes = await Note.find({ userId: req.user.id })
             res.render('notes.ejs', { note: notes, user: req.user })
         } catch (err) {
             console.error(err)
@@ -13,8 +13,10 @@ module.exports = {
         console.log(req.user)
         try {
             console.log(req.params.id)
-            const allNotes = await Note.find()
+            const allNotes = await Note.find({ userId: req.user.id })
             const notes = await Note.findOne({ _id: req.params.id })
+            //const notes = await Note.findOne({ userId: req.user.id })
+            //console.log(notes)
             res.render('displayNotes.ejs', { note: notes, allnotes: allNotes })
         } catch (err) {
             console.error(err)
@@ -22,7 +24,7 @@ module.exports = {
     },
     addNote: async (req, res) => {
         try {
-            await Note.create({ title: req.body.title, notes: req.body.content })
+            await Note.create({ title: req.body.title, notes: req.body.content, userId: req.user.id })
             console.log('note has been added!')
             res.redirect('/notes')
         } catch (err) {

@@ -12,6 +12,7 @@
     <nav>
         <span class="edit">Note Taker</span>
         <button type="submit" form="note1" value="Submit">Submit</button>
+        <a href="/logout" class="btn btn-ghost">Logout</a>
     </nav>
 
     <section id="main-section">
@@ -21,7 +22,7 @@
                 <% note.forEach( el => { %>
                     <li class='' data-id='<%=el._id%>'>
                         <p><%= el.title %></p>
-                        <span><button><a href="/notes" class='del'> delete</a></button> </span>
+                        <span><button><a class='del'> delete</a></button> </span>
                         <button><a href="/notes/display/<%=el._id%>">show notes</a></button>
                     </li>
                     <% }) %>   

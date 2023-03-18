@@ -38,13 +38,23 @@ module.exports = {
 
   },
   getSignup: (req, res) => {
-    if (req.user) {
-      return res.redirect('/notes')
-    }
+    // if (req.user) {
+    //   return res.redirect('/notes')
+    // }
     res.render('signup.ejs')
   },
 
-
+  logout: (req, res) => {
+    req.logout(() => {
+      console.log('User has logged out.')
+    })
+    req.session.destroy((err) => {
+      if (err)
+        console.log("Error : Failed to destroy the session during logout.", err);
+      req.user = null;
+      res.redirect("/");
+    });
+  },
   postSignup: async (req, res, next) => {
     const validationErrors = []
     if (!validator.isEmail(req.body.email)) validationErrors.push({ msg: 'Please enter a valid email address.' })
@@ -72,7 +82,7 @@ module.exports = {
       });
     }
     user.save()
-    return res.redirect("../notes")
+    return res.redirect("../login")
     // (err, existingUser) => {
     //   if (err) {
     //     return next(err);
